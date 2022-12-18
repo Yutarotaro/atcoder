@@ -1,0 +1,9 @@
+[submodule "ac-library"]
+	path = ac-library
+	url = git@github.com:Atcoder/ac-library
+[submodule "AtCoder-Cpp-Template"]
+	path = AtCoder-Cpp-Template
+	url = git@github.com:Yutarotaro/AtCoder-Cpp-Template
+[submodule "live_library"]
+	path = live_library
+	url = git@github.com:atcoder/live_library
