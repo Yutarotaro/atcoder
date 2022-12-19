@@ -38,17 +38,33 @@ template <typename T> T gcd(T a, T b) {
     return a;
   return gcd(b, a % b);
 }
+
+//output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
   for (auto e : v)
+    os << e << " ";
+  return os << "}";
+}
+template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
+  os << "{";
+  for (auto e : st)
     os << e << ",";
   return os << "}";
 }
+template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+  for (auto [k, v] : mp)
+    os << k << " " << v << endl;
+  return os;
+}
+
 template <class t, class u>
 ostream &operator<<(ostream &os, const pair<t, u> &p) {
-  return os << "{" << p.first << "," << p.second << "}";
+  return os << "{" << p.first << " " << p.second << "}";
 }
+
+//input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -68,6 +84,7 @@ std::istream &operator>>(std::istream &is, vector<T> &vec) {
     is >> x;
   return is;
 }
+
 template <class T> T extgcd(T a, T b, T &x, T &y) {
   T d = a;
   if (b == 0) {
@@ -101,36 +118,4 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-
-  int N;
-  cin >> N;
-
-  ll L, R;
-  cin >> L >> R;
-  vector<ll> a(N);
-  cin >> a;
-  auto b = a;
-  reverse(ALL(b));
-
-  vector<ll> l(N), r(N);
-  l[0] = a[0];
-  r[N - 1] = a[N - 1];
-  rep(i, N - 1) {
-    l[i + 1] = a[i + 1] + l[i];
-    r[i] = a[i] + r[i + 1];
-  }
-
-  vector<ll> f(N+1), g(N+1);
-
-  f[0] = 0;
-  rep(i, N) { f[i + 1] = min(f[i] + a[i], L * (i + 1)); }
-
-  g[0] = 0;
-  rep(i, N) { g[i + 1] = min(g[i] + b[i], R * (i + 1)); }
-
-  ll ans = __LONG_LONG_MAX__;
-
-  rep(i, N + 1) { chmin(ans, f[i] + g[N-i]); }
-
-  cout << ans << endl;
 }

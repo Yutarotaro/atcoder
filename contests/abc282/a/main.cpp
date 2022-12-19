@@ -108,7 +108,7 @@ int main() {
 
   string ans = "";
 
-  rep(i, N) { ans.push_back(char(c+i)); }
+  rep(i, N) { ans.push_back(c+i); }
 
   cout << ans << endl;
 }
