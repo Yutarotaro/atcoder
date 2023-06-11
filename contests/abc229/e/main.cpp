@@ -118,4 +118,59 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N, M;
+  cin >> N >> M;
+
+  vector<int> ans(N);
+
+  vector<vector<int>> edges(N);
+  cin >> edges;
+  rep(i, M) { 
+    int a, b;
+    cin >> a >> b;
+
+    --a;
+    --b;
+
+    edges[a].push_back(b);
+    edges[b].push_back(a);
+  }
+
+  int now = 0;
+
+  dsu uf(N);
+
+  ans[0] = 0;
+
+  for (int i = N - 1; i > 0;--i){
+    ++now;
+
+    set<int> leaders;
+    for (int to : edges[i]) {
+      if(i > to){
+        continue;
+      }
+
+      leaders.insert(uf.leader(to));
+    }
+
+    now -= leaders.size();
+
+    for (int to : edges[i]) {
+      if(i > to){
+        continue;
+      }
+
+      uf.merge(i, to);
+
+    }
+
+    ans[N - i] = now;
+  }
+
+  reverse(ALL(ans));
+  for(int i:ans){
+    cout << i << endl;
+  }
 }

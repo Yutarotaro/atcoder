@@ -118,4 +118,61 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  string s;
+  int k;
+  cin >> s >> k;
+
+  ll ans = 0;
+
+  int N = size(s);
+
+  deque<int> x, comma;
+
+  int cnt = 1;
+  rep(i, N - 1) {
+    if(s[i] == s[i+1]){
+      ++cnt;
+    }else{
+      if(s[i] == 'X'){
+        x.push_back(cnt);
+      } else {
+        comma.push_back(cnt);
+      }
+      cnt = 1;
+    }
+  }
+
+  if(s[N-1] == 'X'){
+    x.push_back(cnt);
+  } else {
+    comma.push_back(cnt);
+  }
+
+  if(s[0] == '.'){
+    x.push_front(0);
+  }
+
+  deque<int> now_x, now_comma;
+  int now_sum = 0;
+  int now_cost = 0;
+
+  while(!comma.empty()){
+    int front = x.front();
+    x.pop_front();
+    now_x.push_back(front);
+    now_sum += front;
+
+    if (now_cost + comma.front() <= k) { //次の.を全部Xに変えられる
+      now_sum += comma.front();
+      now_comma.push_back(comma.front());
+      comma.pop_front();
+    } else {
+      chmax(ans, now_sum + (k - now_cost));
+      now_sum -= now_comma.front();
+      now_comma.pop_front();
+    }
+  }
+
+  cout << x << endl;
 }
