@@ -128,12 +128,41 @@ int main() {
   //[0, N): 集合i
   //[N, N+M):要素j
 
-  rep()
+  rep(i, N){
+    int a; cin >> a;
+    rep(j, a){
+      int v;cin >> v;
+      --v;
 
+      //集合iと要素vに辺を張る
+      g[i].push_back(v + N);
+      g[v + N].push_back(i);
+    }
+  }
 
+  vector<int> dist(N + M, __INT_MAX__);
 
-  
+  queue<pii> q;
+  //要素1スタート
+  q.push({N, 0});
+  dist[N] = 0;
 
+  while(!q.empty()){
+    auto [v, cost] = q.front();
+    q.pop();
 
-  
+    ++cost;
+
+    for(int to:g[v]){
+      if(dist[to] == __INT_MAX__){
+        dist[to] = cost;
+        q.push({to, cost});
+      }
+    }
+  }
+
+  // cout << dist << endl;
+
+  cout << (dist[N + M - 1] != __INT_MAX__ ? (dist[N + M - 1] - 2) / 2:-1) << endl;
+
 }

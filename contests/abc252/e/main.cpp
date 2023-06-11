@@ -97,8 +97,57 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+int N, M;
+vector<vector<pii>> g;
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+  
+  cin >> N >> M;
+  g.resize(N);
+
+  map<pii, int> road_idx;
+
+  rep(i, M){
+    int a, b;
+    ll c;
+    cin >> a >> b >> c;
+    --a;--b;
+
+    g[a].push_back({b, c});
+    g[b].push_back({a, c});
+
+    road_idx[pii{a, b}] = i + 1;
+    road_idx[pii{b, a}] = i + 1;
+  }
+
+  vector<int> used_road(N), dist(N, __INT_MAX__);
+
+  priority_queue<pii, vector<pii>, greater<pii>> pq;
+  pq.push(pii{0, 0});
+  dist[0] = 0; //node 0までの最短経路は0
+
+  while(!pq.empty()){
+    auto [cost, v] = pq.top();
+    pq.pop();
+
+    if(dist[v] < cost){
+      continue;
+    }
+
+    for(auto [to, cost_]:g[v]){
+      if(chmin(dist[to],dist[v] + cost_)){
+        used_road[to] = road_idx[pii{v, to}];
+        pq.push(pii{dist[to], to});
+      }
+    }
+  }
+
+  for(int i = 1; i < N;++i){
+    cout << used_road[i] << (i < N - 1 ? " ": "\n");
+  }
+
+
 }
