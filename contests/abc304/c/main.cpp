@@ -118,4 +118,25 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N, D;cin >> N >> D;
+
+  vector<pll> x(N);cin >> x;
+
+  dsu uf(N);
+
+
+  auto dist2 = [](pll a, pll b){return (a.first - b.first) * (a.first - b.first) + (a.second - b.second) * (a.second - b.second);};
+
+  rep(i, N){
+    for(int j = i + 1;j < N;++j){
+      if(dist2(x[i], x[j]) <= D * D){
+        uf.merge(i, j);
+      }
+    }
+  }
+
+  rep(i, N){
+    yesno(uf.same(0, i));
+  }
 }

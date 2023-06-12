@@ -118,4 +118,24 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N;cin >> N;
+  
+  vector<pair<string, int>> l(N);
+
+  int idx = -1;
+  int tmp_min = __INT_MAX__;
+
+  rep(i, N){
+    cin >> l[i].first >> l[i].second;
+    if(chmin(tmp_min, l[i].second)){
+      idx = i;
+    }
+  }
+
+  for(int i = idx;i < idx + N;++i){
+    cout << l[i % N].first << endl;
+  }
+
+
 }

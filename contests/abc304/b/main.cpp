@@ -118,4 +118,9 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  ll N;cin >> N;
+
+  cout << N / max(1LL, ll(pow(10, log10(N) - 2))) * max(1LL, ll(pow(10, log10(N) - 2))) << endl;
+
 }
