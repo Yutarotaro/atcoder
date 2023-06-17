@@ -118,10 +118,4 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-
-  ll x,y,z;cin >> x >> y >> z;
-  string s;cin >> s;
-  int N = size(s);
-
-
 }

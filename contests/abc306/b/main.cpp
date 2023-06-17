@@ -119,9 +119,14 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll x,y,z;cin >> x >> y >> z;
-  string s;cin >> s;
-  int N = size(s);
+  vector<int> a(64);
+  cin >> a;
 
+  ll ans = 0;
 
+  rep(i, 64){
+    ans += ll(pow(2, i)) * a[i];
+  }
+
+  cout << ans << endl;
 }
