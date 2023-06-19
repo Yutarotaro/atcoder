@@ -119,5 +119,26 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N, 2N;
+  int N;cin >> N;
+  vector<int> a(3 * N);cin >> a;
+  vector<int> cnt(N);
+  vector<pii> ans(N);
+  rep(i, N){
+    ans[i].second = i;
+  }
+
+  rep(i, 3 * N){
+    cnt[a[i] - 1]++;
+    if(cnt[a[i] - 1] == 2){
+        ans[a[i]-1].first = i;
+    }
+  }
+
+  sort(ALL(ans));
+
+  rep(i, N){
+    cout << ans[i].second + 1 << (i == N - 1 ? "\n":" ");
+  }
+  
+
 }
