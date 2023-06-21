@@ -118,4 +118,31 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N, M;cin >> N >> M;
+  vector<string> s(N);cin >> s;
+  sort(ALL(s));
+
+  auto check = [M](string a, string b){
+    int ct = 0;
+    rep(i, M){
+      ct += (a[i] != b[i]);
+    }
+    return ct;
+  };
+
+  do{
+    bool flag = true;
+    rep(i, N-1){
+     flag &= (check(s[i], s[i+1]) == 1);
+    }
+
+    if(flag){
+      yesno(true);
+      return 0;
+    }
+
+  }while(next_permutation(ALL(s)));
+
+  yesno(false);
 }

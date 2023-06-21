@@ -118,4 +118,28 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N;cin >> N;
+
+
+  map<int, int> memo;
+
+  int l = 1;
+  int r = N;
+  int mid = (l + r)/ 2; 
+
+  while(r - l > 1){
+      cout << "? " << mid << endl;
+      int ret;
+      cin >> ret;
+      memo[mid] = ret+1;
+      if(ret == 0){
+        l = mid;
+      }else{
+        r = mid;
+      }
+      mid = (l + r) / 2;
+  }
+
+  cout << "! " << l << endl;
 }
