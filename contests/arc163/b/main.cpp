@@ -114,40 +114,96 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-struct edge
-{
-  int to;
-  int cost;
-};
-
-int N, M;
-vector<vector<edge>> g;
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  cin >> N >> M;
-  g.resize(N);
+  int N, M;cin >> N >> M;
+  ll l, r;cin >> l >> r;
+  int K = N - 2;
+  vector<ll> a(K);cin >> a;
+  sort(ALL(a));
 
-  rep(i, M){
-    int a, b, c;
-    cin >> a >> b >> c;
-    --a;--b;
+  ll ans = 0;
 
-    g[a].push_back({b, c});
-    g[b].push_back({a, c});
+  if(M == K){
+    cout << max(0LL, l - a[0]) + max(0LL, a[K-1] - r) << endl;
+    return 0;
   }
 
-  int K;cin >> K;
-  vector<int> a(K);cin >> a;
-  for(int &i: a) --i;
+  auto now_l = lower_bound(ALL(a), l); //l以上最小
+  if(now_l == a.end()){ //lがどれよりも大きいとき
+    --now_l;
+    ans += (l - *now_l);
+    l = *now_l;
+  }
+  else if(now_l == a.begin()){
+    l = *now_l;
+  }
 
-  int D;cin >> D;
-  vector<int> x(D);
+  auto now_r = upper_bound(ALL(a), r); //r以下最大
+  if(now_r == a.begin()){ //rがどの要素よりも小さいとき
+    ans += a[0] - r;
+    r = a[0];
+  }else if(now_r == a.end()){
+    --now_r;
+    r = *now_r;   
+  }else{
+    --now_r;
+  }
+
+  //元々OKなら終わる
+  if(distance(now_l, now_r)+1 >= M){
+    cout << ans << endl;
+    return 0;
+  }
+
+  //終わらないなら、lを*now_l, rをnow_rにする
+  if(l != *now_l){
+    --now_l;
+    ans += (l - *now_l);
+  }
+  if(r != *now_r){
+    ++now_r;
+    ans += (*now_r - r);
+  }
 
 
+  while (1){
+    //OKなら終わる
+    if(distance(now_l, now_r)+1 >= M){
+      break;
+    }
 
+    auto tmp_l = now_l;
+    if(tmp_l == a.begin()){ //lは減らせないのでrを増やす
+      ll tmp_r_val = *now_r;
+      now_r++;
+      ans += (*now_r - tmp_r_val);
+      continue;
+    }
+    tmp_l--;
+    int l_gap_to_next =  *now_l - *tmp_l;
 
+    auto tmp_r = now_r;
+    if(tmp_r == a.end() - 1){ //逆
+      ll tmp_l_val = *now_l;
+      now_l--;
+      ans += (tmp_l_val - *now_l);
+      continue;
+    }
+    tmp_r++;
+    int r_gap_to_next = *tmp_r - *now_r;
+
+    if(l_gap_to_next < r_gap_to_next){
+      ans += l_gap_to_next;
+      --now_l;
+    }else{
+      ans += r_gap_to_next;
+      ++now_r;
+    }
+  }
+  
+  cout << ans << endl;
 }

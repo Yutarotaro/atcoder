@@ -147,7 +147,9 @@ int main() {
   N -= minn;
   maxx -= minn;
 
-  vector<vector<ll>> dp; //dp[i][j] := i番目までのpartsを見た時、M以下で実現可能な総和の最大値
+  int K = size(pars);
+
+  vector<vector<ll>> dp(K, vector<ll>()); //dp[i][j] := i番目までのpartsを見た時、M以下で実現可能な総和の最大値
 
 
 

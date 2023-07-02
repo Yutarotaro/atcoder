@@ -114,40 +114,38 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-struct edge
-{
-  int to;
-  int cost;
-};
-
-int N, M;
-vector<vector<edge>> g;
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  cin >> N >> M;
-  g.resize(N);
+  int N;cin >> N;
+  vector<pll> a(N);cin >> a;
 
-  rep(i, M){
-    int a, b, c;
-    cin >> a >> b >> c;
-    --a;--b;
+  struct tmp{
+    ll a;
+    ll ab;
+    int idx;
+  };
 
-    g[a].push_back({b, c});
-    g[b].push_back({a, c});
+  vector<tmp> score(N);
+
+  rep(i, N){
+    score[i] = tmp{a[i].first, a[i].first+a[i].second, i};
   }
 
-  int K;cin >> K;
-  vector<int> a(K);cin >> a;
-  for(int &i: a) --i;
+  auto comp = [](tmp x, tmp y){
+    if(x.a * y.ab == y.a * x.ab){
+      return x.idx < y.idx;
+    }else{
+      return x.a * y.ab > y.a * x.ab;
+    }
+  };
 
-  int D;cin >> D;
-  vector<int> x(D);
+  sort(ALL(score), comp);
 
-
-
+  rep(i, N){
+    cout << score[i].idx+1 << " \n"[i == N - 1];
+  }
 
 }

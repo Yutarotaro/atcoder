@@ -114,40 +114,8 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-struct edge
-{
-  int to;
-  int cost;
-};
-
-int N, M;
-vector<vector<edge>> g;
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-
-  cin >> N >> M;
-  g.resize(N);
-
-  rep(i, M){
-    int a, b, c;
-    cin >> a >> b >> c;
-    --a;--b;
-
-    g[a].push_back({b, c});
-    g[b].push_back({a, c});
-  }
-
-  int K;cin >> K;
-  vector<int> a(K);cin >> a;
-  for(int &i: a) --i;
-
-  int D;cin >> D;
-  vector<int> x(D);
-
-
-
-
 }

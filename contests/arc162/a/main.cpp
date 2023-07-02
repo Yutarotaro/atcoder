@@ -118,4 +118,26 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int t;cin >> t;
+
+  rep(_, t){
+    int N;cin >> N;
+    vector<int> a(N);
+    cin >> a;
+
+    set<int> st;
+
+    if(a[i] > i + 1){
+
+      continue;
+    }
+
+    
+
+
+
+
+
+  }
 }
