@@ -114,44 +114,64 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-graph g;
-vector<int> seen;
-
-pii dfs(int v){
-  seen[v] = 1;
-
-  for(int to:g[v]){
-    if(seen[to]){
-      return pii{v, to};
-    }else{
-      dfs(to);
-    }
-  }
-}
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N;cin >> N;
-  g.resize(N);
-  seen.resize(N);
+  ll N, M;cin >> N >> M;
+  vector<ll> a(N), b(M);cin >> a >> b;
 
-  rep(i, N){
-    int to;cin >> to; --to;
-    g[i].push_back(to);
+  sort(ALL(a));
+  sort(ALL(b));
+
+  // ll l = 0, r = __INT_MAX__;
+
+  // while(r - l > 1){
+  //   ll mid = (l + r) / 2;
+
+  //   auto itra = lower_bound(ALL(a), mid);
+  //   auto itrb = upper_bound(ALL(b), mid);
+
+  //   ll numa = N - distance(a.begin(), itra); //mid以上の要素数
+  //   ll numb = distance(b.begin(), itrb);   //mid以下の要素数
+
+  //   // cout << mid << endl;
+  //   // cout << numa <<  ' ' << numb << endl;
+
+  //   if(numa < numb){
+  //     r = mid;
+  //   }else{
+  //     l = mid;
+  //   }
+  // }
+
+  // auto tmp = lower_bound(ALL(b), l);
+
+
+  // cout << l << endl;
+  // return 0;
+
+  vector<ll> ans_vec = a;
+  rep(i, M){
+    ans_vec.push_back(b[i] + 1);
   }
 
-  auto [a,b] = dfs(0);
+  ll ans = __INT_MAX__;
 
-  vector<int> ans = {a};
-  int next = b;
-  while(next != a){
-    ans.push_back(next);
-    next = g[next][0];
+  for(ll c:ans_vec){
+    auto itra = upper_bound(ALL(a), c);
+    auto itrb = lower_bound(ALL(b), c);
+
+    ll numa = distance(a.begin(), itra); //c以上の要素数
+    ll numb = M - distance(b.begin(), itrb);   //c以下の要素数
+    // cout << c << endl;
+    // cout << numa <<  ' ' << numb << endl;
+
+    if(numa >= numb){
+      chmin(ans, c);
+    }
   }
 
   cout << ans << endl;
-
 }

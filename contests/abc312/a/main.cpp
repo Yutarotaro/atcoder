@@ -114,44 +114,13 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-graph g;
-vector<int> seen;
-
-pii dfs(int v){
-  seen[v] = 1;
-
-  for(int to:g[v]){
-    if(seen[to]){
-      return pii{v, to};
-    }else{
-      dfs(to);
-    }
-  }
-}
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N;cin >> N;
-  g.resize(N);
-  seen.resize(N);
+  set<string> ans = {"ACE","BDF","CEG","DFA","EGB","FAC","GBD"};
+  string s;cin >> s;
 
-  rep(i, N){
-    int to;cin >> to; --to;
-    g[i].push_back(to);
-  }
-
-  auto [a,b] = dfs(0);
-
-  vector<int> ans = {a};
-  int next = b;
-  while(next != a){
-    ans.push_back(next);
-    next = g[next][0];
-  }
-
-  cout << ans << endl;
-
+  yesno(ans.find(s) != ans.end());
 }

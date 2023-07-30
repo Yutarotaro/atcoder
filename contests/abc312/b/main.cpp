@@ -114,44 +114,31 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-graph g;
-vector<int> seen;
-
-pii dfs(int v){
-  seen[v] = 1;
-
-  for(int to:g[v]){
-    if(seen[to]){
-      return pii{v, to};
-    }else{
-      dfs(to);
-    }
-  }
-}
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N;cin >> N;
-  g.resize(N);
-  seen.resize(N);
+  int N, M;cin >> N >> M;
+  vector<string> s(N);cin >> s;
 
-  rep(i, N){
-    int to;cin >> to; --to;
-    g[i].push_back(to);
+  rep(i, N-9+1){
+    rep(j, M-9+1){
+      bool ok = true;
+
+      rep(a, 9){
+        rep(b, 9){
+          if((a < 3 && b < 3) || (a >= 6 && b >= 6)){
+            ok &= (s[a+i][b+j] == '#');
+          }else if((a < 4 && b < 4) || (a >= 7 && b >= 7)){
+            ok &= (s[a+i][b+j] == '.');
+          }
+        }
+      }
+
+      if(ok){
+        cout << i + 1 << ' ' << j + 1 << endl;
+      }
+    }
   }
-
-  auto [a,b] = dfs(0);
-
-  vector<int> ans = {a};
-  int next = b;
-  while(next != a){
-    ans.push_back(next);
-    next = g[next][0];
-  }
-
-  cout << ans << endl;
-
 }

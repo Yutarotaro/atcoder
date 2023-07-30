@@ -118,4 +118,18 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N = 8;
+  vector<int> a(N);cin >> a;
+  a.push_back(a[N-1]);
+
+  bool flag1 = true, flag2 = true, flag3 = true;
+
+  rep(i, N){
+    flag1 &= (a[i] <= a[i+1]);
+    flag2 &= (a[i] >= 100 && a[i] <= 675);
+    flag3 &= !(a[i]%25);
+  }
+
+  yesno(flag1 && flag2 && flag3);
 }
