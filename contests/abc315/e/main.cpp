@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,7 +53,8 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+template <class t, class u>
+ostream &operator<<(ostream &os, const map<t, u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -64,7 +65,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-//input
+// input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -116,24 +117,44 @@ bool operator<(const Info& another) const
 
 int N;
 graph g;
+vector<int> seen;
+vector<int> ans;
 
+void dfs(int v) {
+  seen[v] = 1;
+  for (int to : g[v]) {
+    if (!seen[to]) {
+      dfs(to);
+    }
+  }
+
+  if (v)
+    ans.push_back(v);
+}
 
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-    
+
   cin >> N;
   g.resize(N);
+  seen.resize(N);
 
-  rep(i, N){
-    int c;cin >> c;
-    rep(j, c){
+  rep(i, N) {
+    int c;
+    cin >> c;
+    rep(j, c) {
       int p;
       cin >> p;
-
-
+      --p;
+      g[i].push_back(p);
     }
   }
 
+  dfs(0);
+
+  for (int v : ans) {
+    cout << v + 1 << ' ';
+  }
 }
