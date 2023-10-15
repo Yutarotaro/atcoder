@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-// output
+//output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,8 +53,7 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u>
-ostream &operator<<(ostream &os, const map<t, u> &mp) {
+template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -65,7 +64,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-// input
+//input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -115,16 +114,70 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-using mint = modint998244353;
-
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll N, X;
-  cin >> N >> X;
-  vector<mint> T(N);
+  int N;cin >> N;
 
-  mint ans = 0;
+  string T;cin >> T;
+  int M = size(T);
+
+
+  vector<int> ans;
+
+  rep(i, N){
+    string s;cin >> s;
+    int S= size(s);
+
+    if(s == T){
+      ans.push_back(i + 1);
+      continue;
+    }
+
+    int idx = min(M,S); //sとTが初めて異なる位置
+    rep(j, min(M, S)){
+      if(s[j] != T[j]){
+        idx = j;
+        break;
+      }
+    }
+
+    if(idx == min(M,S)){
+      if(abs(S-M) == 1){
+        ans.push_back(i + 1);
+      }
+      continue;
+    }
+
+    if(abs(S-M) >= 2)continue;
+
+    if((T[idx]+s.substr(idx)) == T.substr(idx)){
+      ans.push_back(i + 1);
+      continue;
+    }
+
+    if((s[idx]+T.substr(idx)) == s.substr(idx)){
+      ans.push_back(i + 1);
+      continue;
+    }
+
+    if(s.substr(idx+1) == T.substr(idx+1)){
+      ans.push_back(i + 1);
+      continue;
+    }
+
+    // if(s.contains(T) || T.contains(s) ){
+    //   ans.push_back(i + 1);
+    //   continue;
+    // }
+  }
+
+
+  cout << ans.size() << endl;
+  for(int i:ans){
+    cout << i << ' ';
+  }
+  cout << endl;
 }

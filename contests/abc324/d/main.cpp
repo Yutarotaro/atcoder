@@ -115,16 +115,56 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
-using mint = modint998244353;
+
+bool canPermuteTo(const std::string& s, int a) {
+    // 数字aを文字列に変換
+    std::string a_str = std::to_string(a);
+    
+    // 各文字の出現回数を数えるためのベクトルを初期化
+    std::vector<int> count_s(10, 0);
+    std::vector<int> count_a(10, 0);
+
+    // 文字列sの各文字の出現回数をカウント
+    for (char c : s) {
+        count_s[c - '0']++;
+    }
+
+    // aの各桁の出現回数をカウント
+    for (char c : a_str) {
+        count_a[c - '0']++;
+    }
+
+    // 2つのカウントベクトルを比較
+    return count_s == count_a;
+}
 
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll N, X;
-  cin >> N >> X;
-  vector<mint> T(N);
+  int N;
+  cin >> N;
+  string s;
+  cin >> s;
 
-  mint ans = 0;
+  ll ans = 0;
+
+  rep(i, 10) {
+    rep(j, 10) {
+      rep(k, 10) {
+        rep(l, 10) { 
+          ll tmp = i * ll(pow(10, N-1)) + j * ll(pow(10, N-2)) + k * ll(pow(10, N-3)) + l * ll(pow(10, N-4)) ;
+
+          ll d = ll(sqrt(tmp));
+
+          for(ll a = d - 50;a <= d + 50;++a){
+            ans += canPermuteTo(s, a*a); 
+          }
+         }
+      }
+    }
+  }
+
+  cout << ans << endl;
 }

@@ -147,9 +147,11 @@ int main() {
   rep(i, N) {
     ll cha = max_points - points[i];
     int j = 0;
+    int ct = 0;
     while (cha > 0) {
       if (result[i][score[j].second] == 'x') {
         cha -= score[j].first;
+        ++ct;
       }
       ++j;
       if (j == M) {
@@ -157,6 +159,6 @@ int main() {
       }
     }
 
-    cout << j << endl;
+    cout << ct << endl;
   }
 }
