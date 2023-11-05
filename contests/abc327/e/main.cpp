@@ -122,5 +122,12 @@ int main() {
   int N;cin >> N;vector<int> p(N);cin >> p;
 
   double ans = 0.;
+
+  rep(i, k){ 
+    int choise = i + 1;
+
+    vector<
+
+  }
   
 }
