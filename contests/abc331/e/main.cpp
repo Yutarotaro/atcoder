@@ -114,23 +114,53 @@ bool operator<(const Info& another) const
     return age < another.age;  //年齢を比較
 };*/
 /*--------------------------------------------*/
+ll op(ll a, ll b) { return max(a, b); }
+ll e() { return -__LONG_LONG_MAX__; }
 
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N, X;
-  cin >> N >> X;
-  vector<int> a(N);
+  int N, M, L;
+  cin >> N >> M >> L;
+  vector<ll> a(N);
   cin >> a;
+  vector<ll> b(M);
+  cin >> b;
 
-  for (int i : a) {
-    if (i == X) {
-      yesno(true);
-      return 0;
+  if (!L) {
+    sort(ALL(a));
+    sort(ALL(b));
+    cout << a[N - 1] + b[M - 1] << endl;
+    return 0;
+  }
+
+  vector<set<int>> cd(N); // cd[i] := 食べ合わせが悪い組
+  rep(i, L) {
+    int c, d;
+    cin >> c >> d;
+    --c;
+    --d;
+
+    cd[c].insert(d);
+  }
+
+  ll ans = 0;
+
+  segtree<ll, op, e> sg(b);
+
+  rep(i, N) {
+    for (auto idx : cd[i]) {
+      sg.set(idx, -__LONG_LONG_MAX__);
+    }
+
+    chmax(ans, a[i] + sg.all_prod());
+
+    for (auto idx : cd[i]) {
+      sg.set(idx, b[idx]);
     }
   }
 
-  yesno(false);
+  cout << ans << endl;
 }

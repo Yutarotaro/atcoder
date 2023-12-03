@@ -120,17 +120,24 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N, X;
-  cin >> N >> X;
-  vector<int> a(N);
-  cin >> a;
+  int N, S, M, L;
+  cin >> N >> S >> M >> L;
 
-  for (int i : a) {
-    if (i == X) {
-      yesno(true);
-      return 0;
+  int ans = __INT_MAX__;
+
+  int num[] = {6, 8, 12};
+  int price[] = {S, M, L};
+
+  for (int s = 0; s <= 17; ++s) {
+    for (int m = 0; m <= 13; ++m) {
+      for (int l = 0; l <= 9; ++l) {
+        if (s * 6 + m * 8 + l * 12 >= N) {
+          chmin(ans, s * S + m * M + l * L);
+        }
+      }
     }
   }
 
-  yesno(false);
+  cout << ans << endl;
+
 }

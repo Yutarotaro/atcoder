@@ -120,17 +120,28 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N, X;
-  cin >> N >> X;
-  vector<int> a(N);
-  cin >> a;
+  int N, Q;
+  cin >> N >> Q;
 
-  for (int i : a) {
-    if (i == X) {
-      yesno(true);
-      return 0;
+  string s;
+  cin >> s;
+
+  while (Q--) {
+    int q;
+    cin >> q;
+
+    if (q == 1) {
+      int x;
+      char c;
+      cin >> x >> c;
+      --x;
+
+
+    } else {
+      int l, r;
+      cin >> l >> r;
+
+
     }
   }
-
-  yesno(false);
 }

@@ -115,22 +115,55 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+int N, Q;
+void pre_process(vector<vector<int>> const &a, vector<vector<ll>> &S) {
+  for (int h = 1; h < N + 1; h++) {
+    for (int w = 1; w < N + 1; w++) {
+      S[h][w] = a[h - 1][w - 1] + S[h][w - 1] + S[h - 1][w] - S[h - 1][w - 1];
+    }
+  }
+}
+
+ll ret_super_s(int x, int y, vector<vector<ll>> const &S) {
+  ll ret = 0;
+
+  ret += S[N][N] * (x / N) * (y / N);
+  ret += S[N][y % N] * (x / N);
+  ret += S[x % N][N] * (y / N);
+  ret += S[x % N][y % N];
+
+  return ret;
+}
+
+ll query(int h1, int w1, int h2, int w2, vector<vector<ll>> const &S) {
+  ++h2;
+  ++w2;
+  return ret_super_s(h2, w2, S) - ret_super_s(h1, w2, S) -
+         ret_super_s(h2, w1, S) + ret_super_s(h1, w1, S);
+}
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N, X;
-  cin >> N >> X;
-  vector<int> a(N);
-  cin >> a;
+  cin >> N >> Q;
 
-  for (int i : a) {
-    if (i == X) {
-      yesno(true);
-      return 0;
-    }
+  vector<string> p(N);
+  cin >> p;
+  vector<vector<int>> P(N, vector<int>(N));
+  rep(i, N) {
+    rep(j, N) { P[i][j] = (p[i][j] == 'B' ? 1 : 0); }
   }
 
-  yesno(false);
+  vector<vector<ll>> s(N + 1, vector<ll>(N + 1));
+
+  pre_process(P, s);
+
+  rep(_, Q) {
+    ll a, b, c, d;
+    cin >> a >> b >> c >> d;
+
+    cout << query(a, b, c, d, s) << endl;
+  }
 }

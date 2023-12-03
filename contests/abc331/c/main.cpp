@@ -119,18 +119,34 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-
-  int N, X;
-  cin >> N >> X;
+  int N;
+  cin >> N;
   vector<int> a(N);
   cin >> a;
 
-  for (int i : a) {
-    if (i == X) {
-      yesno(true);
-      return 0;
-    }
+  map<int, ll> num_nums;
+
+  set<ll> st;
+  rep(i, N) {
+    st.insert(a[i]);
+    num_nums[a[i]]++;
   }
 
-  yesno(false);
+  map<int, ll> order;
+  vector<ll> tmp;
+  int idx = 0;
+  for (int s : st) {
+    order[s] = idx++;
+    tmp.push_back(s);
+  }
+
+  vector<ll> sum(idx);
+
+  for (int i = idx - 2; i >= 0; --i) {
+    sum[i] = sum[i + 1] + num_nums[tmp[i + 1]] * tmp[i + 1];
+  }
+
+  rep(i, N) { cout << sum[order[a[i]]] << ' '; }
+
+  cout << endl;
 }

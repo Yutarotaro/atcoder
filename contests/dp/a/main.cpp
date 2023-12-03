@@ -120,17 +120,26 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N, X;
-  cin >> N >> X;
-  vector<int> a(N);
-  cin >> a;
+  int N;
+  cin >> N;
+  vector<int> h(N);
+  cin >> h;
 
-  for (int i : a) {
-    if (i == X) {
-      yesno(true);
-      return 0;
-    }
+  vector<int> dp(N, INT_MAX);
+  dp[0] = 0;
+  // dp[1] = abs(h[0] - h[1]);
+
+  rep(i, N - 1) {
+    if (i < N - 2)
+      chmin(dp[i + 2], dp[i] + abs(h[i] - h[i + 2]));
+    chmin(dp[i + 1], dp[i] + abs(h[i] - h[i + 1]));
   }
 
-  yesno(false);
+  /*
+  rep(i, N - 2) {
+    dp[i + 2] =
+        min(dp[i] + abs(h[i] - h[i + 2]), dp[i + 1] + abs(h[i + 1] - h[i + 2]));
+  }*/
+
+  cout << dp[N - 1] << endl;
 }
