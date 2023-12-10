@@ -124,4 +124,18 @@ int main() {
   cin >> N >> K;
   vector<int> h(N);
   cin >> h;
+
+  vector<ll> dp(
+      N, ll(__INT_MAX__)); // dp[i] 足場iに辿り着くまでに支払うコストの総和のmin
+  dp[0] = 0;
+
+  for (int i = 1; i < N; ++i) {
+    rep(j, K) {
+      int k = j + 1;
+      if (i - k >= 0 && i - k < N )
+        chmin(dp[i], dp[i - k] + abs(h[i] - h[i - k]));
+    }
+  }
+
+  cout << dp[N - 1] << endl;
 }
