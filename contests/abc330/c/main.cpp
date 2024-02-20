@@ -118,4 +118,17 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  ll D;cin >> D;
+
+  ll ans = __LONG_LONG_MAX__;
+
+  for(ll x = 0; D - x * x >= 0; ++x){
+    ll res = D - x * x;
+    ll y = ll(sqrt(res));
+    chmin(ans, abs(res - y*y));
+    chmin(ans, abs(res - (y+1)*(y+1)));
+  }
+
+  cout << ans << endl;
 }
