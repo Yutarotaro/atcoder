@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,7 +53,8 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+template <class t, class u>
+ostream &operator<<(ostream &os, const map<t, u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -64,7 +65,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-//input
+// input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -114,8 +115,159 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+#include <cassert>
+// #define DEBUG
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N, Q;
+  cin >> N >> Q;
+  vector<ll> a(N);
+  cin >> a;
+
+  map<ll, ll> cnt; // keyがvalue個ある
+  set<ll> tmp_set; // aの重複をなくしたset
+  for (auto i : a) {
+    tmp_set.insert(i);
+    cnt[i]++;
+  }
+
+  set<pll> st; //連続する列の{先頭、末尾}を要素とするset
+  auto itr = tmp_set.begin();
+  ll pre_first = *itr;
+  ll pre_second = *itr;
+
+  for (auto i : tmp_set) {
+    if (i > pre_second + 1) {
+      st.insert({pre_first, pre_second});
+      pre_first = i;
+    }
+    pre_second = i;
+  }
+
+  st.insert({pre_first, pre_second});
+  st.insert({-__LONG_LONG_MAX__, -__LONG_LONG_MAX__});
+  st.insert({__LONG_LONG_MAX__, __LONG_LONG_MAX__});
+
+
+  rep(_, Q) {
+    int i;
+    ll x;
+    cin >> i >> x;
+    --i;
+
+
+    #ifdef DEBUG
+    cout << "cnt: " << a[i] << ' ' << cnt[a[i]] << endl;
+    #endif //DEBUG
+
+    ////////////////////////////////////////////////////////////////////// a[i]を除く
+    if (cnt[a[i]] == 1) {
+      // stを更新する
+      auto itr = st.lower_bound({a[i], -__LONG_LONG_MAX__});
+      auto [f, s] = *itr;
+
+      #ifdef DEBUG
+      cout <<f<< ' ' << s << endl;
+      #endif
+
+      if (a[i] == f) { // a[i]が左端と一致
+        st.erase(itr);
+        if (f != s) {
+          st.insert({f + 1, s});
+        }
+      } else{
+        auto pre_itr = itr;
+        --pre_itr;
+        auto [pre_f, pre_s] = *pre_itr;
+        #ifdef DEBUG
+        cout <<pre_f<< ' ' << pre_s << endl;
+        #endif
+
+        st.erase(pre_itr);
+
+        if (a[i] < pre_s) {
+          st.insert({pre_f, a[i] - 1});
+          st.insert({a[i] + 1, pre_s});
+        } else { //a[i] == pre_s
+          if (pre_f != pre_s) {
+            st.insert({pre_f, pre_s - 1});
+          }
+        }
+      }
+    }
+
+    #ifdef DEBUG
+    for(auto i: st){
+      cout << i << endl;
+    }
+    #endif //DEBUG
+
+    cnt[a[i]]--;
+
+    ////////////////////////////////////////////////////////////////////// i番目にxを加える
+    if (cnt[x] == 0) {
+      // stを更新する
+      auto itr = st.lower_bound({x, -__LONG_LONG_MAX__});
+      auto [f, s] = (*itr);
+
+      if (x == f - 1) {
+        if (itr == st.begin()) {
+          st.erase(itr);
+          st.insert({f - 1, s});
+        } else {
+          auto pre_itr = itr;
+          --pre_itr;
+          auto [pre_f, pre_s] = (*pre_itr);
+
+          if(pre_s == x - 1){
+            st.erase(st.find({f, s}));
+            st.erase(st.find({pre_f, pre_s}));
+            st.insert({pre_f, s});
+          }else{
+            st.erase(itr);
+            st.insert({f - 1, s});
+          }
+        }
+      } else {
+        if (itr == st.begin()) {
+          st.insert({x, x});
+        } else {
+          auto pre_itr = itr;
+          --pre_itr;
+          auto [pre_f, pre_s] = (*pre_itr);
+
+          if (x == pre_s + 1) {
+            st.erase(pre_itr);
+            st.insert({pre_f, pre_s + 1});
+          } else {
+            st.insert({x, x});
+          }
+        }
+      }
+    }
+
+    #ifdef DEBUG
+    cout << endl;
+    for(auto i: st){
+      cout << i << endl;
+    }
+    cout << endl;
+    #endif // DEBUG
+
+    cnt[x]++;
+    a[i] = x;
+    // mex
+    auto itr = st.lower_bound({0, -__LONG_LONG_MAX__});
+    if ((*itr).first == 0) {
+      cout << (*itr).second + 1 << endl;
+    } else {
+      cout << 0 << endl;
+    }
+    #ifdef DEBUG
+    cout << endl;
+    #endif // DEBUG
+  }
 }

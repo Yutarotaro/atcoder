@@ -8,5 +8,5 @@ array=()
 
 for v in ${input[@]}
 do
-  echo $v
+  if [$]
 done
