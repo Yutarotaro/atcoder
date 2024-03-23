@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-// output
+//output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,8 +53,7 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u>
-ostream &operator<<(ostream &os, const map<t, u> &mp) {
+template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -65,7 +64,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-// input
+//input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -119,22 +118,4 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-
-  string T;
-  int N;
-  cin >> T >> N;
-  vector<int> a(N);
-  vector<vector<string>> s(N);
-
-  rep(i, N) {
-    cin >> a[i];
-    s[i].resize(a[i]);
-    rep(j, a[i]) {
-      string t;
-      cin >> t;
-      s[i][j] = t;
-    }
-  }
-
-  cout << s << endl;
 }

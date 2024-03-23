@@ -136,5 +136,35 @@ int main() {
     }
   }
 
-  cout << s << endl;
+  vector<vector<ll>> dp(N, vector<ll>(size(T) + 1, __INT_MAX__));
+  // dp[i][j] := i+1番目まで使って、Tのj文字目まで作るのに必要な最小の金額
+
+  for (int i = 0; i < N; ++i) {
+    dp[i][0] = 0;
+  }
+
+  for (int i = 0; i < N; ++i) {
+    for (int j = 0; j <= T.size(); ++j) {
+      for (string tmp : s[0]) {
+        if (tmp == T.substr(0, j + 1)) {
+          dp[i][j] = 1;
+        }
+      }
+    }
+  }
+
+  for (int i = 1; i < N; ++i) {
+    for (int j = 0; j <= size(T); ++j) {
+      chmin(dp[i][j], dp[i - 1][j]);
+      for (string tmp : s[i]) {
+        if (0 <= j - int(tmp.size()) + 1 &&
+            T.substr(j - int(tmp.size()) + 1, tmp.size()) == tmp) {
+          chmin(dp[i][j], dp[i - 1][j - tmp.size()] + 1);
+        }
+      }
+    }
+  }
+
+  ll ans = dp[N - 1][T.size() - 1];
+  cout << (ans == __INT_MAX__ ? -1 : ans) << endl;
 }

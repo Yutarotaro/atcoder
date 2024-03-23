@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-// output
+//output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,8 +53,7 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u>
-ostream &operator<<(ostream &os, const map<t, u> &mp) {
+template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -65,7 +64,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-// input
+//input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -120,21 +119,53 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  string T;
-  int N;
-  cin >> T >> N;
-  vector<int> a(N);
-  vector<vector<string>> s(N);
+  int N;cin >> N;
+  int M = N;
+  vector<ll> a(N+2);
+  rep(i, N){
+    cin >> a[i+1];
+  }
+  a[0] = -1, a[N+1] = INF;
 
-  rep(i, N) {
-    cin >> a[i];
-    s[i].resize(a[i]);
-    rep(j, a[i]) {
-      string t;
-      cin >> t;
-      s[i][j] = t;
-    }
+  map<int, pii> mp;
+  for(int i = 1;i <= N;++i){
+    mp[a[i]].first = a[i-1];
+    mp[a[i]].second = a[i+1];
   }
 
-  cout << s << endl;
+  int Q;cin >> Q;
+  rep(_, Q){
+    int q;cin >> q;
+    if(q == 1){
+      ll x, y;cin >> x >> y;
+      int x_next = mp[x].second;
+      mp[x].second = y;
+      mp[y] = {x, x_next};
+      mp[x_next].first = y;
+      ++M;
+    }else{
+      ll x;cin >> x;
+      int x_prev = mp[x].first;
+      int x_next = mp[x].second;
+      mp[x_prev].second = x_next;
+      mp[x_next].first = x_prev;
+      mp.erase(x);
+      --M;
+    }
+  } 
+
+  map<int, int> first_to_val;
+  for(auto& [k, v]: mp){
+    first_to_val[v.first] = k;
+  }
+
+  vector<int> ans(M);
+  ans[0] = first_to_val[-1];
+  for(int i = 1;i < M;++i){
+    ans[i] = first_to_val[ans[i - 1]];
+  }
+
+  rep(i, M){
+    cout << ans[i] << (i == M - 1?"\n":" ");
+  }
 }
