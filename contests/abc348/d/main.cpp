@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,7 +53,8 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+template <class t, class u>
+ostream &operator<<(ostream &os, const map<t, u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -64,7 +65,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-//input
+// input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -119,6 +120,63 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll N, M, K;cin >> N >> M >> K;
-  
+  int H, W;
+  cin >> H >> W;
+  vector<string> a(H);
+  cin >> a;
+
+  pii start, goal;
+  rep(i, H) {
+    rep(j, W) {
+      if (a[i][j] == 'S') {
+        start = {i, j};
+      }
+      if (a[i][j] == 'T') {
+        goal = {i, j};
+      }
+    }
+  }
+
+  int N;
+  cin >> N;
+  map<pii, ll> medicine;
+  rep(i, N) {
+    int r, c, e;
+    cin >> r >> c >> e;
+    --r;
+    --c;
+    medicine[pii(r, c)] = e;
+  }
+
+  queue<pair<ll, pii>> q;
+  q.push({0LL, start});
+
+  vector<vector<int>> seen(H, vector<int>(W));
+
+  while (!q.empty()) {
+    auto [energy, now] = q.front();
+    q.pop();
+
+    if (now == goal) {
+      yesno(true);
+      return 0;
+    }
+
+    chmax(energy, medicine[now]);
+
+    // cout << now << ' ' << a[now.first][now.second] << ' ' << energy << endl;
+
+    rep(i, 4) {
+      pll next = {now.first + dx[i], now.second + dy[i]};
+
+      if (0 <= next.first && next.first < H && 0 <= next.second &&
+          next.second < W && a[next.first][next.second] != 'x' &&
+          !seen[next.first][next.second] && energy > 0) {
+        seen[next.first][next.second] = 1;
+        q.push({energy - 1, next});
+      }
+    }
+  }
+
+  yesno(false);
 }

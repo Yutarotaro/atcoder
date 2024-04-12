@@ -118,7 +118,9 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+  int N;cin >> N;
 
-  ll N, M, K;cin >> N >> M >> K;
-  
+  rep(i, N){
+    cout << ((i+1)%3?"o": "x") << (i == N - 1?"\n":"");
+  }
 }

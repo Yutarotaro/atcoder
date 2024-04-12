@@ -119,6 +119,25 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll N, M, K;cin >> N >> M >> K;
-  
+  int N;cin >> N;
+  vector<pll> a(N);cin >> a;
+
+  map<ll, ll> mp;
+
+  rep(i, N){
+    if(mp[a[i].second]){
+      chmin(mp[a[i].second], a[i].first);
+    }else{
+      mp[a[i].second] = a[i].first;
+    }
+  }
+
+  ll ans = 0;
+
+  for(auto& [k, v]:mp){
+    chmax(ans, v);
+  }
+
+
+  cout << ans << endl;
 }

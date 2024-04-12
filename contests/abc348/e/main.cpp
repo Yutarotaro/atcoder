@@ -114,11 +114,51 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+int N;
+graph g;
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll N, M, K;cin >> N >> M >> K;
-  
+  cin >> N;
+  g.resize(N);
+
+  ll ans = __LONG_LONG_MAX__;
+
+  map<int, int> cnt;
+
+  rep(i, N - 1){
+    int a, b;cin >> a >> b;
+    --a;--b;
+
+    g[a].push_back(b);
+    g[b].push_back(a);
+    cnt[a]++;
+    cnt[b]++;
+  }
+  vector<ll> c(N);cin >> c;
+
+  int start = -1;
+  for(auto &[k, v]: cnt){
+    if(v == 1){
+      start = k;
+      break;
+    }
+  }
+
+
+  vector<int> order(N);
+  order[0] = start;
+
+  rep(i, N-1){
+    
+  }
+
+
+
+
+
+  cout << ans << endl;
 }

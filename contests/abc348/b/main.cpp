@@ -119,6 +119,18 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  ll N, M, K;cin >> N >> M >> K;
-  
+  int N;cin >> N;
+  vector<pll> x(N);cin >> x;
+
+  rep(i, N){
+    int idx = 0;
+    ll max_dist2 = 0;
+    rep(j, N){
+      if(chmax(max_dist2, (x[i].first-x[j].first)*(x[i].first-x[j].first)+(x[i].second-x[j].second)*(x[i].second-x[j].second))){
+        idx = j;
+      }
+    }
+      cout << idx + 1 << endl;
+  }
+
 }
