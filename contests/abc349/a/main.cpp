@@ -119,18 +119,13 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int n,k;cin >> n >> k;
-  vector<int> a(n);cin >> a;
-  vector<int> ans;
-
-  rep(i, n){
-    if(a[i] % k == 0){
-      ans.push_back(a[i] / k);
-    }
+  int N;cin >> N;
+  int sum = 0;
+  rep(i, N-1){
+    int a;cin >> a;
+    sum += a;
   }
 
-  for(auto i : ans){
-    cout << i << ' ';
-  }
+  cout << -sum << endl;
 
 }

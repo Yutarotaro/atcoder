@@ -118,4 +118,11 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int N, Q;cin >> N >> Q;
+  cin >> N >> Q;
+  vector<int> x(Q);
+  cin >> x;
+
+
 }

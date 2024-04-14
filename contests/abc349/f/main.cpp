@@ -118,19 +118,4 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
-
-  int n,k;cin >> n >> k;
-  vector<int> a(n);cin >> a;
-  vector<int> ans;
-
-  rep(i, n){
-    if(a[i] % k == 0){
-      ans.push_back(a[i] / k);
-    }
-  }
-
-  for(auto i : ans){
-    cout << i << ' ';
-  }
-
 }

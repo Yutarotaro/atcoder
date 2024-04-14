@@ -119,18 +119,29 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int n,k;cin >> n >> k;
-  vector<int> a(n);cin >> a;
-  vector<int> ans;
+  string s;cin >> s;
+  int N = size(s);
 
-  rep(i, n){
-    if(a[i] % k == 0){
-      ans.push_back(a[i] / k);
+  vector<int> a(200);
+
+  rep(i, N){
+    a[s[i]]++;
+  }
+
+  map<int, int> mp;
+
+  for(char i = 'a'; i <= 'z';++i){
+    mp[a[i]]++;
+  }
+
+  for(auto& [k, v]: mp){
+    if(k < 1)continue;
+    if(v != 2){
+      yesno(false);
+      return 0;
     }
   }
 
-  for(auto i : ans){
-    cout << i << ' ';
-  }
+  yesno(true);
 
 }

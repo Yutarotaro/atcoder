@@ -118,19 +118,30 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+  string s, t;cin >> s >> t;
+  transform(t.begin(), t.end(), t.begin(), ::tolower);
 
-  int n,k;cin >> n >> k;
-  vector<int> a(n);cin >> a;
-  vector<int> ans;
+  int N = size(s);
 
-  rep(i, n){
-    if(a[i] % k == 0){
-      ans.push_back(a[i] / k);
+  int idx = 0;
+  rep(i, N){
+    if(s[i] == t[idx]){
+      ++idx;
+      if(idx == 3){
+        yesno(true);
+        return 0;
+      }
     }
   }
-
-  for(auto i : ans){
-    cout << i << ' ';
+  
+  if(idx == 2 && t[2] == 'x'){
+    yesno(true);
+    return 0;
   }
+
+  yesno(false);
+
+  
+
 
 }

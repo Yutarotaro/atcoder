@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,7 +53,8 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+template <class t, class u>
+ostream &operator<<(ostream &os, const map<t, u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -64,7 +65,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-//input
+// input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -114,23 +115,38 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+vector<pll> ans;
+
+ll func(ll l, ll r) {
+  if (l == r) {
+    return 0;
+  }
+
+  ll cnt = 0;
+  ll tmp_l = l;
+
+  while (l % 2 == 0 && ll((1LL << cnt + 1) * (l / 2 + 1)) <= r) {
+    cnt++;
+    l /= 2;
+  }
+
+  // cout << ll(pow(2, cnt) * l ) << ' ' << ll(pow(2, cnt) * (l + 1)) << endl;
+  ll p = (1LL << cnt);
+  ans.push_back({p * l, p * (l + 1)});
+
+  return 1 + func(p * (l + 1), r);
+}
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int n,k;cin >> n >> k;
-  vector<int> a(n);cin >> a;
-  vector<int> ans;
+  ll l, r;
+  cin >> l >> r;
 
-  rep(i, n){
-    if(a[i] % k == 0){
-      ans.push_back(a[i] / k);
-    }
+  cout << func(l, r) << endl;
+  for (auto &i : ans) {
+    cout << i.first << ' ' << i.second << endl;
   }
-
-  for(auto i : ans){
-    cout << i << ' ';
-  }
-
 }

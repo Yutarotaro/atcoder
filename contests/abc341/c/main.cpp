@@ -118,4 +118,11 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int H, W, N;
+  cin >> H >> W >> N;
+  string t;cin >> t;
+  vector<string> s(H);cin >> s;
+
+  
 }

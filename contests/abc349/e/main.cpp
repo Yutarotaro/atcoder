@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,7 +53,8 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+template <class t, class u>
+ostream &operator<<(ostream &os, const map<t, u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -64,7 +65,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-//input
+// input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -119,18 +120,104 @@ int main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int n,k;cin >> n >> k;
-  vector<int> a(n);cin >> a;
-  vector<int> ans;
+  vector<vector<ll>> a(3, vector<ll>(3));
+  cin >> a;
 
-  rep(i, n){
-    if(a[i] % k == 0){
-      ans.push_back(a[i] / k);
+  set<pair<ll, pll>> corners, others;
+  for (int i = 0; i <= 2; i += 2) {
+    for (int j = 0; j <= 2; j += 2) {
+      corners.insert({-a[i][j], {i, j}});
     }
   }
 
-  for(auto i : ans){
-    cout << i << ' ';
+  others.insert({-a[0][1], {0, 1}});
+  others.insert({-a[1][0], {1, 0}});
+  others.insert({-a[2][1], {2, 1}});
+  others.insert({-a[1][2], {1, 2}});
+
+  auto Corners = corners;
+  auto Others = others;
+
+  // 1手目に真ん中
+  ll takahashi = a[1][1], aoki = 0;
+  while (corners.size()) {
+    auto itr = corners.begin();
+    auto [ptr, xy] = *itr;
+    aoki += -ptr;
+    corners.erase(itr);
+
+    pll diag = {2 - xy.first, 2 - xy.second};
+    ll x = diag.first;
+    ll y = diag.second;
+    takahashi += a[x][y];
+    corners.erase(corners.find({-a[x][y], {x, y}}));
   }
+
+  while (others.size()) {
+    auto itr = others.begin();
+    auto [ptr, xy] = *itr;
+    aoki += -ptr;
+    others.erase(itr);
+
+    pll diag = {2 - xy.first, 2 - xy.second};
+    ll x = diag.first;
+    ll y = diag.second;
+    takahashi += a[x][y];
+    others.erase(others.find({-a[x][y], {x, y}}));
+  }
+  // cout << takahashi << ' ' << aoki << endl;
+  if (takahashi > aoki) {
+    cout << "Takahashi" << endl;
+    return 0;
+  }
+
+  takahashi = 0, aoki = 0;
+
+  // 1
+  takahashi += -(*Corners.begin()).first;
+  auto [x1, y1] = (*Corners.begin()).second;
+  Corners.erase(Corners.begin());
+
+  // 2
+  aoki += a[1][1];
+
+  // 3
+  takahashi += a[2 - x1][2 - y1];
+  Corners.erase(Corners.find({-a[2 - x1][2 - y1], {2 - x1, 2 - y1}}));
+
+  // 4
+  aoki += -(*Others.begin()).first;
+  auto [x2, y2] = (*Others.begin()).second;
+  Others.erase(Others.begin());
+
+  // 5
+  takahashi += a[2 - x2][2 - y2];
+  Others.erase(Others.find({-a[2 - x2][2 - y2], {2 - x2, 2 - y2}}));
+
+  // 6
+  aoki += -(*Others.begin()).first;
+  auto [x3, y3] = (*Others.begin()).second;
+  Others.erase(Others.begin());
+
+  // 7
+  takahashi += a[2 - x3][2 - y3];
+  Others.erase(Others.find({-a[2 - x3][2 - y3], {2 - x3, 2 - y3}}));
+
+  // 8
+  aoki += -(*Corners.begin()).first;
+  auto [x4, y4] = (*Corners.begin()).second;
+  Corners.erase(Corners.begin());
+
+  // 9
+  takahashi += a[2 - x4][2 - y4];
+  Corners.erase(Corners.find({-a[2 - x4][2 - y4], {2 - x4, 2 - y4}}));
+
+  if (takahashi > aoki) {
+    cout << "Takahashi" << endl;
+  }else{
+    cout << "Aoki" << endl;
+  }
+
+
 
 }
