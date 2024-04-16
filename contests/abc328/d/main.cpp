@@ -118,4 +118,22 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  string s;cin >> s;
+  int N = size(s);
+  
+  string ans;
+
+  rep(i, N){
+    ans.push_back(s[i]);
+
+    if(ans.size() >= 3 && ans.substr(ans.size()-3) == "ABC"){
+      rep(_, 3){
+        ans.pop_back();
+      }
+    }
+  }
+
+  cout << ans << endl;
+
 }
