@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-// output
+//output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,8 +53,7 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u>
-ostream &operator<<(ostream &os, const map<t, u> &mp) {
+template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -65,7 +64,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-// input
+//input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -115,18 +114,55 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+int N, M;
+graph g;
+vector<int> seen;
+set<int> vs;
+set<pii> edges;
+
+void dfs(int v){
+  seen[v] = 1;
+  vs.insert(v);
+
+  for(int to: g[v]){
+    edges.insert({min(to, v), max(to, v)});
+    if(!seen[to]){
+      dfs(to);
+    }
+  }
+}
+
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N;
-  cin >> N;
-  string t;
-  cin >> t;
-  vector<string> s(N);
-  cin >> s;
+  cin >> N >> M;
+  g.resize(N);
+  seen.resize(N);
 
-  vector<pii> lr(N);
-  
+  rep(i, M){
+    int a,b;cin >> a >> b;
+    --a;--b;
+
+    g[a].push_back(b);
+    g[b].push_back(a);
+  }
+
+  ll ans = 0;
+
+  rep(i, N){
+    if(!seen[i]){
+      vs.clear();
+      edges.clear();
+      dfs(i);
+
+      // cout << vs.size() << ' '<<edges.size() << endl;
+      ans += vs.size() * (vs.size() - 1) / 2 - edges.size();
+
+    }
+  }
+
+  cout << ans << endl;
 }

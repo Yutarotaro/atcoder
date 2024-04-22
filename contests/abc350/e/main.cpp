@@ -115,18 +115,39 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+ll N, A, X, Y;
+map<ll, long double> memo;
+
+long double rec(ll n) {
+  if (n == 0) {
+    return 0.;
+  }
+  if (n == 1) {
+    return min((double)X, 6 * Y / 5.);
+  }
+
+  if (memo[n]) {
+    return memo[n];
+  }
+
+  long double cand1 = X + rec(n / A);
+
+  long double tmp = 0.;
+  for (int i = 2; i <= 6; ++i) {
+    tmp += rec(n / i) / 5.;
+  }
+
+  long double cand2 = tmp + 6 * Y / 5.;
+
+  return memo[n] = min(cand1, cand2);
+}
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-  int N;
-  cin >> N;
-  string t;
-  cin >> t;
-  vector<string> s(N);
-  cin >> s;
+  cin >> N >> A >> X >> Y;
 
-  vector<pii> lr(N);
-  
+  cout << fixed << setprecision(10) << rec(N) << endl;
 }
