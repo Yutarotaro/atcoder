@@ -114,8 +114,54 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+int N, M;
+graph g;
+vector<bool> seen;
+int minus, plus;
+vector<ll> dp; // dp[i]:=頂点iから出る最長の有向パス
+
+ll dfs(int v, ll path){
+  if(dp[v] != -1){
+    return dp[v];
+  }
+
+  seen[v] = 1;
+
+  ll ret = 0;
+
+  for(auto& to: g[v]){
+    chmax(ret, dfs(to, path + 1) + 1);
+  }
+
+  return dp[v] = ret;
+}
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  cin >> N >> M;
+  g.resize(N);
+  seen.resize(N);
+  dp.assign(N, -1);
+
+  rep(i, M){
+    int a, b;
+    cin >> a >> b;
+    --a; --b;
+
+    g[a].push_back(b);
+  }
+
+  ll ans = 0;
+
+  rep(i, N){
+    if(!seen[i]){
+      chmax(ans, dfs(i, 0));
+    }
+  }
+
+  cout << ans << endl;
+
 }

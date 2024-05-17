@@ -114,8 +114,29 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+
+using mint = modint1000000007;
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  int H, W;cin >> H >> W;
+  vector<string> s(H); cin >> s;
+
+  vector<vector<mint>> dp(H + 1, vector<mint>(W + 1));
+
+  dp[1][1] = 1;
+  for(int i = 1;i <= H;++i){
+    for(int j = 1;j <= W;++j){
+      if(s[i - 1][j - 1] == '.'){
+          dp[i][j] += dp[i - 1][j];
+          dp[i][j] += dp[i][j - 1];
+      } 
+    }
+  }
+
+
+  cout << dp[H][W].val() << endl;
 }

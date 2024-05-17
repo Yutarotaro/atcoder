@@ -118,4 +118,25 @@ int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+  
+  int N;cin >> N;
+  vector<double> p(N); cin >> p;
+
+  vector<vector<double>> dp(N + 1, vector<double>(N + 1));
+
+  dp[0][0] = 1.0;
+
+  for(int i = 1;i <= N;++i){
+    dp[i][0] = dp[i - 1][0] * (1 - p[i - 1]);
+    for(int j = 1;j <= i; ++j){
+      dp[i][j] = dp[i - 1][j] * (1 - p[i - 1]) + dp[i - 1][j - 1] * p[i - 1]; 
+    }
+  }
+  
+
+  double ans = 0.;
+  for(int j = (N + 1) / 2;j <= N;++j){
+    ans += dp[N][j];
+  }
+  cout << fixed << setprecision(10) << ans << endl;
 }

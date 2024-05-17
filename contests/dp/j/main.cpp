@@ -39,7 +39,7 @@ template <typename T> T gcd(T a, T b) {
   return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
   os << "{";
@@ -53,7 +53,8 @@ template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
     os << e << ",";
   return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
+template <class t, class u>
+ostream &operator<<(ostream &os, const map<t, u> &mp) {
   for (auto [k, v] : mp)
     os << k << " " << v << endl;
   return os;
@@ -64,7 +65,7 @@ ostream &operator<<(ostream &os, const pair<t, u> &p) {
   return os << "{" << p.first << " " << p.second << "}";
 }
 
-//input
+// input
 template <typename T, typename U>
 std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
   return is >> pair.first >> pair.second;
@@ -114,8 +115,57 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+vector<vector<vector<double>>> dp;
+map<vector<int>, int> mp;
+int num_1, num_2, num_3;
+int N;
+
+double dfs(int n3, int n2, int n1) {
+  if(mp[{n3, n2, n1}]){
+    return dp[n3][n2][n1];
+  }
+
+  double ret = N / double(n3 + n2 + n1);
+
+  mp[{n3, n2, n1}] = 1;
+
+  if (n3) {
+    ret += dfs(n3 - 1, n2 + 1, n1) * double(n3) / (n1 + n2 + n3);
+  }
+
+  if (n2) {
+    ret += dfs(n3, n2 - 1, n1 + 1) * double(n2) / (n1 + n2 + n3);
+  }
+
+  if (n1 >= 1) {
+    ret += dfs(n3, n2, n1 - 1) * double(n1) / (n1 + n2 + n3);
+  }
+
+
+  return dp[n3][n2][n1] = ret;
+}
+
 int main() {
   // cout << fixed << setprecision(10)
   cin.tie(0);
   ios::sync_with_stdio(false);
+
+  cin >> N;
+  vector<int> a(N);
+  cin >> a;
+  vector<int> cnt(3);
+  for (auto i : a) {
+    cnt[--i]++;
+  }
+
+  num_1 = cnt[0];
+  num_2 = cnt[1];
+  num_3 = cnt[2];
+  dp.assign(num_3 + 1,
+            vector<vector<double>>(num_3 + num_2 + 2, vector<double>(N + 1)));
+
+  mp[{0, 0, 1}] = 1;
+  dp[0][0][1] = N;
+
+  cout << fixed << setprecision(10) << dfs(num_3, num_2, num_1) << endl;
 }

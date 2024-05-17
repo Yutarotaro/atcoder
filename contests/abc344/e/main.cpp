@@ -20,89 +20,83 @@ const ll MOD = 1e9 + 7;
 const ll mod = 998244353;
 const int MAX = 10000000;
 template <typename T1, typename T2> inline bool chmin(T1 &a, T2 b) {
-  if (a > b) {
-    a = b;
-    return 1;
-  }
-  return 0;
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
 }
 template <typename T1, typename T2> inline bool chmax(T1 &a, T2 b) {
-  if (a < b) {
-    a = b;
-    return 1;
-  }
-  return 0;
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
 }
 template <typename T> T gcd(T a, T b) {
-  if (b == 0)
-    return a;
-  return gcd(b, a % b);
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
 }
 
-//output
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
-  os << "{";
-  for (auto e : v)
-    os << e << " ";
-  return os << "}";
+    os << "{";
+    for (auto e : v)
+        os << e << " ";
+    return os << "}";
 }
 template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
-  os << "{";
-  for (auto e : st)
-    os << e << ",";
-  return os << "}";
+    os << "{";
+    for (auto e : st)
+        os << e << ",";
+    return os << "}";
 }
-template <class t, class u> ostream &operator<<(ostream &os, const map<t,u> &mp) {
-  for (auto [k, v] : mp)
-    os << k << " " << v << endl;
-  return os;
-}
-
-template <class t, class u>
-ostream &operator<<(ostream &os, const pair<t, u> &p) {
-  return os << "{" << p.first << " " << p.second << "}";
+template <class t, class u> ostream &operator<<(ostream &os, const map<t, u> &mp) {
+    for (auto [k, v] : mp)
+        os << k << " " << v << endl;
+    return os;
 }
 
-//input
-template <typename T, typename U>
-std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
-  return is >> pair.first >> pair.second;
+template <class t, class u> ostream &operator<<(ostream &os, const pair<t, u> &p) {
+    return os << "{" << p.first << " " << p.second << "}";
+}
+
+// input
+template <typename T, typename U> std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
+    return is >> pair.first >> pair.second;
 }
 template <class t> ostream &operator>>(ostream &os, const vc<t> &v) {
-  for (auto e : v)
-    os >> e;
-  return os;
+    for (auto e : v)
+        os >> e;
+    return os;
 }
-template <class t, class u>
-ostream &operator>>(ostream &os, const pair<t, u> &p) {
-  return os >> p.first >> p.second;
-}
-template <typename T>
-std::istream &operator>>(std::istream &is, vector<T> &vec) {
-  for (T &x : vec)
-    is >> x;
-  return is;
+template <class t, class u> ostream &operator>>(ostream &os, const pair<t, u> &p) { return os >> p.first >> p.second; }
+template <typename T> std::istream &operator>>(std::istream &is, vector<T> &vec) {
+    for (T &x : vec)
+        is >> x;
+    return is;
 }
 
 template <class T> T extgcd(T a, T b, T &x, T &y) {
-  T d = a;
-  if (b == 0) {
-    x = 1;
-    y = 0;
-  } else {
-    d = extgcd(b, a % b, y, x);
-    y -= (a / b) * x;
-  }
-  return d;
+    T d = a;
+    if (b == 0) {
+        x = 1;
+        y = 0;
+    } else {
+        d = extgcd(b, a % b, y, x);
+        y -= (a / b) * x;
+    }
+    return d;
 }
 
 void yesno(bool flag, string yes = "Yes", string no = "No") {
-  if (flag) {
-    cout << yes << endl;
-  } else {
-    cout << no << endl;
-  }
+    if (flag) {
+        cout << yes << endl;
+    } else {
+        cout << no << endl;
+    }
 }
 
 int dx[4] = {1, -1, 0, 0};
@@ -115,57 +109,59 @@ bool operator<(const Info& another) const
 /*--------------------------------------------*/
 
 int main() {
-  // cout << fixed << setprecision(10)
-  cin.tie(0);
-  ios::sync_with_stdio(false);
+    // cout << fixed << setprecision(10)
+    cin.tie(0);
+    ios::sync_with_stdio(false);
 
-  int N;cin >> N;
-  int M = N;
-  vector<ll> a(N+2);
-  rep(i, N){
-    cin >> a[i+1];
-  }
-  a[0] = -1, a[N+1] = INF;
+    int N;
+    cin >> N;
+    vector<ll> a(N + 2, -1);
+    rep(i, N) { cin >> a[i + 1]; }
+    a[N + 1] = LLONG_MAX;
+    map<int, pii> mp;
 
-  map<int, pii> mp;
-  for(int i = 1;i <= N;++i){
-    mp[a[i]].first = a[i-1];
-    mp[a[i]].second = a[i+1];
-  }
+    rep(i, N) { mp[a[i + 1]] = {a[i], a[i + 2]}; }
 
-  int Q;cin >> Q;
-  rep(_, Q){
-    int q;cin >> q;
-    if(q == 1){
-      ll x, y;cin >> x >> y;
-      int x_next = mp[x].second;
-      mp[x].second = y;
-      mp[y] = {x, x_next};
-      mp[x_next].first = y;
-      ++M;
-    }else{
-      ll x;cin >> x;
-      int x_prev = mp[x].first;
-      int x_next = mp[x].second;
-      mp[x_prev].second = x_next;
-      mp[x_next].first = x_prev;
-      mp.erase(x);
-      --M;
+    int Q;
+    cin >> Q;
+    while (Q--) {
+        int q;
+        cin >> q;
+        if (q == 1) {
+            int x, y;
+            cin >> x >> y;
+            auto [pre_x, pos_x] = mp[x];
+            mp[x] = {pre_x, y};
+            mp[y] = {x, pos_x};
+        } else {
+            int x;
+            cin >> x;
+
+            auto [pre_x, pos_x] = mp[x];
+            mp[pre_x].second = pos_x;
+            mp[pos_x].first = pre_x;
+            mp.erase(x);
+        }
     }
-  } 
 
-  map<int, int> first_to_val;
-  for(auto& [k, v]: mp){
-    first_to_val[v.first] = k;
-  }
+    int start = -1;
+    for (auto [k, v] : mp) {
+        cout << k << ' ' << v << endl;
+        if (v.first == -1) {
+            start = k;
+        }
+    }
 
-  vector<int> ans(M);
-  ans[0] = first_to_val[-1];
-  for(int i = 1;i < M;++i){
-    ans[i] = first_to_val[ans[i - 1]];
-  }
+    vector<int> ans = {start};
+    int now = start;
+    while (mp[now].second != -1) {
+        // while (mp[now].second != LLONG_MAX) {
+        now = mp[now].second;
+        ans.push_back(now);
+    }
 
-  rep(i, M){
-    cout << ans[i] << (i == M - 1?"\n":" ");
-  }
+    for (auto v : ans) {
+        cout << v << ' ';
+    }
+    cout << endl;
 }

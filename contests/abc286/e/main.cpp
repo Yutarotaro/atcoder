@@ -20,90 +20,83 @@ const ll MOD = 1e9 + 7;
 const ll mod = 998244353;
 const int MAX = 10000000;
 template <typename T1, typename T2> inline bool chmin(T1 &a, T2 b) {
-  if (a > b) {
-    a = b;
-    return 1;
-  }
-  return 0;
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
 }
 template <typename T1, typename T2> inline bool chmax(T1 &a, T2 b) {
-  if (a < b) {
-    a = b;
-    return 1;
-  }
-  return 0;
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
 }
 template <typename T> T gcd(T a, T b) {
-  if (b == 0)
-    return a;
-  return gcd(b, a % b);
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
 }
 
 // output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
-  os << "{";
-  for (auto e : v)
-    os << e << " ";
-  return os << "}";
+    os << "{";
+    for (auto e : v)
+        os << e << " ";
+    return os << "}";
 }
 template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
-  os << "{";
-  for (auto e : st)
-    os << e << ",";
-  return os << "}";
+    os << "{";
+    for (auto e : st)
+        os << e << ",";
+    return os << "}";
 }
-template <class t, class u>
-ostream &operator<<(ostream &os, const map<t, u> &mp) {
-  for (auto [k, v] : mp)
-    os << k << " " << v << endl;
-  return os;
+template <class t, class u> ostream &operator<<(ostream &os, const map<t, u> &mp) {
+    for (auto [k, v] : mp)
+        os << k << " " << v << endl;
+    return os;
 }
 
-template <class t, class u>
-ostream &operator<<(ostream &os, const pair<t, u> &p) {
-  return os << "{" << p.first << " " << p.second << "}";
+template <class t, class u> ostream &operator<<(ostream &os, const pair<t, u> &p) {
+    return os << "{" << p.first << " " << p.second << "}";
 }
 
 // input
-template <typename T, typename U>
-std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
-  return is >> pair.first >> pair.second;
+template <typename T, typename U> std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
+    return is >> pair.first >> pair.second;
 }
 template <class t> ostream &operator>>(ostream &os, const vc<t> &v) {
-  for (auto e : v)
-    os >> e;
-  return os;
+    for (auto e : v)
+        os >> e;
+    return os;
 }
-template <class t, class u>
-ostream &operator>>(ostream &os, const pair<t, u> &p) {
-  return os >> p.first >> p.second;
-}
-template <typename T>
-std::istream &operator>>(std::istream &is, vector<T> &vec) {
-  for (T &x : vec)
-    is >> x;
-  return is;
+template <class t, class u> ostream &operator>>(ostream &os, const pair<t, u> &p) { return os >> p.first >> p.second; }
+template <typename T> std::istream &operator>>(std::istream &is, vector<T> &vec) {
+    for (T &x : vec)
+        is >> x;
+    return is;
 }
 
 template <class T> T extgcd(T a, T b, T &x, T &y) {
-  T d = a;
-  if (b == 0) {
-    x = 1;
-    y = 0;
-  } else {
-    d = extgcd(b, a % b, y, x);
-    y -= (a / b) * x;
-  }
-  return d;
+    T d = a;
+    if (b == 0) {
+        x = 1;
+        y = 0;
+    } else {
+        d = extgcd(b, a % b, y, x);
+        y -= (a / b) * x;
+    }
+    return d;
 }
 
 void yesno(bool flag, string yes = "Yes", string no = "No") {
-  if (flag) {
-    cout << yes << endl;
-  } else {
-    cout << no << endl;
-  }
+    if (flag) {
+        cout << yes << endl;
+    } else {
+        cout << no << endl;
+    }
 }
 
 int dx[4] = {1, -1, 0, 0};
@@ -114,35 +107,56 @@ bool operator<(const Info& another) const
     return age < another.age;  //年齢を比較
 };*/
 /*--------------------------------------------*/
+pll operator+(const pll &a, const pll &b) { return pll{a.first + b.first, a.second + b.second}; }
 
 int main() {
-  // cout << fixed << setprecision(10)
-  cin.tie(0);
-  ios::sync_with_stdio(false);
+    // cout << fixed << setprecision(10)
+    cin.tie(0);
+    ios::sync_with_stdio(false);
 
-  int N;
-  cin >> N;
-  vector<ll> a(N);
-  cin >> a;
+    int N;
+    cin >> N;
+    vector<ll> a(N);
+    cin >> a;
 
-  vector<string> s(N);
-  cin >> s;
+    vector<string> s(N);
+    cin >> s;
 
-  int q;
-  cin >> q;
+    int q;
+    cin >> q;
 
-  auto query = [&](int from, int to) {
-    //dfs
+    vector<vector<pll>> dist(N, vector<pll>(N));
 
+    rep(i, N) {
+        rep(j, N) {
+            if (i == j) {
+                dist[i][j].second = -a[i];
+            } else {
+                dist[i][j] = (s[i][j] == 'Y' ? pll{1, -(a[i] + a[j])} : pll{INT_MAX, 0});
+            }
+        }
+    }
 
-  };
+    rep(k, N) {
+        rep(i, N) {
+            rep(j, N) { chmin(dist[i][j], dist[i][k] + dist[k][j] + pll{0, a[k]}); }
+        }
+    }
 
-  rep(_, q) {
-    int u, v;
-    cin >> u >> v;
-    --u;
-    --v;
+    auto query = [&](int from, int to) {
+        if (dist[from][to].first == INT_MAX) {
+            cout << "Impossible" << endl;
+        } else {
+            cout << dist[from][to].first << ' ' << -dist[from][to].second << endl;
+        }
+    };
 
-    query(u, v);
-  }
+    rep(_, q) {
+        int u, v;
+        cin >> u >> v;
+        --u;
+        --v;
+
+        query(u, v);
+    }
 }
