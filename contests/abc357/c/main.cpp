@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -108,6 +107,26 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+vector<string> level_n(int n) {
+    if (n == 0) {
+        return {"#"};
+    }
+
+    vector<string> ret(int(pow(3, n)), string(int(pow(3, n)), '.'));
+
+    auto tmp = level_n(n - 1);
+    rep(i, int(pow(3, n))) {
+        rep(j, int(pow(3, n))) {
+            if (!(int(pow(3, n - 1)) <= i && i < 2 * int(pow(3, n - 1)) && int(pow(3, n - 1)) <= j &&
+                  j < 2 * int(pow(3, n - 1)))) {
+                ret[i][j] = tmp[i % int(pow(3, n - 1))][j % int(pow(3, n - 1))];
+            }
+        }
+    }
+
+    return ret;
+}
+
 int main() {
     // cout << fixed << setprecision(10)
     cin.tie(0);
@@ -115,10 +134,10 @@ int main() {
 
     int N;
     cin >> N;
-    string t;
-    cin >> t;
-    vector<string> s(N);
-    cin >> s;
 
-    vector<pii> lr(N);
+    auto ans = level_n(N);
+
+    for (auto &i : ans) {
+        cout << i << endl;
+    }
 }

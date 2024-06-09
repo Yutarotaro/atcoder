@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -115,10 +114,7 @@ int main() {
 
     int N;
     cin >> N;
-    string t;
-    cin >> t;
-    vector<string> s(N);
-    cin >> s;
-
-    vector<pii> lr(N);
+    vector<ll> a(N);
+    cin >> a;
+    sort(ALL(a));
 }

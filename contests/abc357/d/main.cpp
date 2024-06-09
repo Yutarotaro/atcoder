@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -113,12 +112,12 @@ int main() {
     cin.tie(0);
     ios::sync_with_stdio(false);
 
-    int N;
+    ll N;
     cin >> N;
-    string t;
-    cin >> t;
-    vector<string> s(N);
-    cin >> s;
 
-    vector<pii> lr(N);
+    using mint = modint998244353;
+
+    int digit = size(to_string(N));
+
+    cout << (N * (mint(mint(10).pow(digit)).pow(N) - 1) / (mint(10).pow(digit) - 1)).val() << endl;
 }

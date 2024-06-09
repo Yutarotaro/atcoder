@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -108,17 +107,67 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+int N;
+vector<int> a;
+vector<int> seen;
+
+int ct = 0;
+
+vector<set<int>> loops;
+
+map<int, int> ct2ind;
+
+map<int, int> inloop;
+
+void dfs(int v, const int start, set<int> &s) {
+    if (seen[v])
+        return;
+    seen[v] = ++ct;
+    ct2ind[ct] = v;
+
+    if (seen[a[v]]) {
+        if (seen[a[v]] >= start) {
+            for (int i = seen[a[v]]; i <= ct; ++i) {
+                inloop[ct2ind[i]] = loops.size();
+                s.insert(ct2ind[i]);
+            }
+        }
+    } else {
+        dfs(a[v], start, s);
+    }
+}
+
 int main() {
     // cout << fixed << setprecision(10)
     cin.tie(0);
     ios::sync_with_stdio(false);
 
-    int N;
     cin >> N;
-    string t;
-    cin >> t;
-    vector<string> s(N);
-    cin >> s;
+    a.resize(N);
+    cin >> a;
+    seen.resize(N);
 
-    vector<pii> lr(N);
+    rep(i, N) { --a[i]; }
+
+    vector<ll> val(N);
+
+    ll ans = 0;
+
+    rep(i, N) {
+        if (!seen[i]) {
+            set<int> s;
+            dfs(i, ct + 1, s);
+            if (size(s)) {
+                loops.push_back(s);
+            }
+        }
+    }
+
+    ll ans = 0;
+
+    vector<ll> dp(N);
+
+    rep(i, N) {}
+
+    cout << ans << endl;
 }

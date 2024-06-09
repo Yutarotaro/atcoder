@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -112,13 +111,4 @@ int main() {
     // cout << fixed << setprecision(10)
     cin.tie(0);
     ios::sync_with_stdio(false);
-
-    int N;
-    cin >> N;
-    string t;
-    cin >> t;
-    vector<string> s(N);
-    cin >> s;
-
-    vector<pii> lr(N);
 }

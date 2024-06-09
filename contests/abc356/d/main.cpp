@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -108,17 +107,41 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+using mint = modint998244353;
+
 int main() {
     // cout << fixed << setprecision(10)
     cin.tie(0);
     ios::sync_with_stdio(false);
 
-    int N;
-    cin >> N;
-    string t;
-    cin >> t;
-    vector<string> s(N);
-    cin >> s;
+    ll N, M;
+    cin >> N >> M;
 
-    vector<pii> lr(N);
+    int num_bit = 0;
+    int n_popc = 0; // N's popcount - 1
+    for (; (1LL << num_bit) <= N; ++num_bit) {
+        n_popc += bool(N & (1LL << num_bit));
+    }
+
+    mint ans = 0;
+    for (ll i = 1; i <= M; i <<= 1) {
+        if (i & M) {
+            vector<pair<mint, mint>> dp(num_bit + 1); // i bits from tail
+            dp[num_bit] = {1, 0};
+            rep(i, num_bit - 1) {
+                if (i == M) {
+                    dp[i] = dp[i + 1];
+                } else {
+                    if ((1LL << i) & N) {
+                        dp[i] = {dp[i + 1].first, dp[i + 1].first + dp[i + 1].second * 2};
+                    } else {
+                        dp[i] = {dp[i + 1].first, dp[i + 1].second * 2};
+                    }
+                }
+            }
+            ans += dp[1].first + dp[1].second;
+        }
+    }
+
+    cout << ans.val() << endl;
 }

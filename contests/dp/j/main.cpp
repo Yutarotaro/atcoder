@@ -167,5 +167,10 @@ int main() {
   mp[{0, 0, 1}] = 1;
   dp[0][0][1] = N;
 
+  for(int i = 0;i <= num_1;++i){
+    for(int j = 0)
+  }
+
+
   cout << fixed << setprecision(10) << dfs(num_3, num_2, num_1) << endl;
 }
