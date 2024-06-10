@@ -1,0 +1,1 @@
+        return memo[v] = ll(size(loops[inloop[v]]) - 1;

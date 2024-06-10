@@ -137,6 +137,20 @@ void dfs(int v, const int start, set<int> &s) {
     }
 }
 
+map<int, ll> memo;
+
+ll dfs2(int v) {
+    if (memo.contains(v)) {
+        return memo[v];
+    }
+
+    if (inloop.contains(v)) {
+        return memo[v] = ll(size(loops[inloop[v]]));
+    }
+
+    return memo[v] = dfs2(a[v]) + 1LL;
+}
+
 int main() {
     // cout << fixed << setprecision(10)
     cin.tie(0);
@@ -150,8 +164,6 @@ int main() {
     rep(i, N) { --a[i]; }
 
     vector<ll> val(N);
-
-    ll ans = 0;
 
     rep(i, N) {
         if (!seen[i]) {
@@ -167,7 +179,7 @@ int main() {
 
     vector<ll> dp(N);
 
-    rep(i, N) {}
+    rep(i, N) { ans += dfs2(i); }
 
     cout << ans << endl;
 }
