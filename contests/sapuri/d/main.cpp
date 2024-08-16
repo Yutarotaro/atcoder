@@ -4,7 +4,6 @@ using namespace atcoder;
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -38,15 +37,32 @@ template <typename T> T gcd(T a, T b) {
         return a;
     return gcd(b, a % b);
 }
+
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
+    os << "{";
     for (auto e : v)
         os << e << " ";
+    return os << "}";
+}
+template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
+    os << "{";
+    for (auto e : st)
+        os << e << ",";
+    return os << "}";
+}
+template <class t, class u> ostream &operator<<(ostream &os, const map<t, u> &mp) {
+    for (auto [k, v] : mp)
+        os << k << " " << v << endl;
     return os;
 }
+
 template <class t, class u> ostream &operator<<(ostream &os, const pair<t, u> &p) {
-    return os << p.first << " " << p.second;
+    return os << "{" << p.first << " " << p.second << "}";
 }
+
+// input
 template <typename T, typename U> std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
     return is >> pair.first >> pair.second;
 }
@@ -61,6 +77,7 @@ template <typename T> std::istream &operator>>(std::istream &is, vector<T> &vec)
         is >> x;
     return is;
 }
+
 template <class T> T extgcd(T a, T b, T &x, T &y) {
     T d = a;
     if (b == 0) {
@@ -95,18 +112,48 @@ int main() {
     cin.tie(0);
     ios::sync_with_stdio(false);
 
-    string s;
-    cin >> s;
-    map<char, int> mp;
+    ll N, K;
+    cin >> N >> K;
+    vector<ll> w(N);
+    cin >> w;
 
-    rep(i, 3) { mp[s[i]]++; }
+    ll l = *max_element(ALL(w));
+    // ll l = max(K, *max_element(ALL(w)));
+    ll r = ll(1e10);
 
-    for (auto [k, v] : mp) {
-        if (v == 1) {
-            cout << k << endl;
-            return 0;
+    while (r - l > 1) {
+        ll mid = (l + r) / 2;
+
+        ll k = 1;
+        ll now = w[0];
+        for (int i = 1; i < N; ++i) {
+            if (now + w[i] > mid) {
+                ++k;
+                now = 0;
+            }
+            now += w[i];
+        }
+
+        if (k <= K) { // OK
+            r = mid;
+        } else {
+            l = mid;
         }
     }
 
-    cout << -1 << endl;
+    ll k = 1;
+    ll now = w[0];
+    for (int i = 1; i < N; ++i) {
+        if (now + w[i] > l) {
+            ++k;
+            now = 0;
+        }
+        now += w[i];
+    }
+
+    if (k <= K) { // OK
+        cout << l << endl;
+    } else {
+        cout << r << endl;
+    }
 }

@@ -2,9 +2,7 @@
 #include <atcoder/all>
 using namespace atcoder;
 #endif
-#include <bits/stdc++.h>
 using namespace std;
-using namespace atcoder;
 using graph = vector<vector<int>>;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -38,15 +36,32 @@ template <typename T> T gcd(T a, T b) {
         return a;
     return gcd(b, a % b);
 }
+
+// output
 template <class t> using vc = vector<t>;
 template <class t> ostream &operator<<(ostream &os, const vc<t> &v) {
+    os << "{";
     for (auto e : v)
         os << e << " ";
+    return os << "}";
+}
+template <class t> ostream &operator<<(ostream &os, const set<t> &st) {
+    os << "{";
+    for (auto e : st)
+        os << e << ",";
+    return os << "}";
+}
+template <class t, class u> ostream &operator<<(ostream &os, const map<t, u> &mp) {
+    for (auto [k, v] : mp)
+        os << k << " " << v << endl;
     return os;
 }
+
 template <class t, class u> ostream &operator<<(ostream &os, const pair<t, u> &p) {
-    return os << p.first << " " << p.second;
+    return os << "{" << p.first << " " << p.second << "}";
 }
+
+// input
 template <typename T, typename U> std::istream &operator>>(std::istream &is, pair<T, U> &pair) {
     return is >> pair.first >> pair.second;
 }
@@ -61,6 +76,7 @@ template <typename T> std::istream &operator>>(std::istream &is, vector<T> &vec)
         is >> x;
     return is;
 }
+
 template <class T> T extgcd(T a, T b, T &x, T &y) {
     T d = a;
     if (b == 0) {
@@ -90,23 +106,25 @@ bool operator<(const Info& another) const
 };*/
 /*--------------------------------------------*/
 
+class dict {
+  private:
+    ll hash(string s) {
+        ll ret = 0;
+
+        for (auto &c : s) {
+            ret += (c - 'A' + 1);
+            ret *= 10;
+        }
+
+        return ret;
+    }
+};
+
 int main() {
     // cout << fixed << setprecision(10)
     cin.tie(0);
     ios::sync_with_stdio(false);
 
-    string s;
-    cin >> s;
-    map<char, int> mp;
-
-    rep(i, 3) { mp[s[i]]++; }
-
-    for (auto [k, v] : mp) {
-        if (v == 1) {
-            cout << k << endl;
-            return 0;
-        }
-    }
-
-    cout << -1 << endl;
+    int N;
+    cin >> N;
 }
