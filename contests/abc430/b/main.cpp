@@ -117,4 +117,24 @@ int main() {
 
     vector<string> s(n);
     cin >> s;
+
+    int ans = 0;
+
+    rep(i, n - m + 1) {
+        rep(j, n - m + 1) {
+            bool flag = true;
+            rep(x, m) {
+                rep(y, m) {
+                    if (s[i + x][j + y] != s[x][y]) {
+                        flag = false;
+                    }
+                }
+            }
+            if (flag) {
+                cout << "Yes" << endl;
+                return 0;
+            }
+        }
+    }
+    cout << "No" << endl;
 }
